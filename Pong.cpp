@@ -8,10 +8,8 @@ using namespace std;
 #include "Court.h"
 #include "Meta.h"
 
-// CONSTS
-const int SLEEP = 100; // stop the execution during X miliseconds 
+const int SLEEP = 50; // stop the execution during X miliseconds 
 
-// ENUM
 typedef enum {
 	black, dark_blue, dark_green, dark_cyan, dark_red,
 	dark_magenta, dark_yellow, light_gray, dark_gray,
@@ -19,14 +17,10 @@ typedef enum {
 	light_magenta, light_yellow, white
 } tColor;
 
-// STRUCTS
-
 typedef struct {
 	tCourt court;
 	tScore score;
 } tGame;
-
-// FUNCTIONS 
 
 int menu();
 void wallLines();
@@ -59,28 +53,23 @@ int main() {
 				wonRound = isThereAWinner(game.court);
 				wonGame = updateScore(game.score, game.court.roundWinner);
 
-				if (wonGame)
-				{
+				if (wonGame) {
 					system("cls");
 					displayScore(game.score);
-
-					if (game.score.player1 == MAX_ROUNDS) {
+					cout << char(7) << setw(28) << "";
+					if (game.score.player1 == MAX_ROUNDS)
 						cout << "The player 1 wons the game";
-					}
-					else {
+					else
 						cout << "The player 2 wons the game";
-					}
+
+					cout << endl;
 				}
 				else if ((!wonGame) && (wonRound)) {
-					// Aquí no hay ningún bug, resetea el juego... Solo que la bola por defecto empieza en el medio
 					game.court = initializeCourt();// Won round, reset the board
 				}
 
 			} while ((!finish) && (!wonGame));
 
-			break;
-		case 2:
-			// FUTURE IMPROVEMENTS
 			break;
 		}
 		option = menu();
@@ -92,10 +81,12 @@ int main() {
 int menu() {
 	int option;
 
-	cout << endl;
 	cout << "1. Execute the game" << endl;
 	cout << "0. Exit" << endl;
+	cin.sync();
 	cin >> option;
+	cin.sync();
+	cout << endl;
 
 	while (option < 0 || option > 1) {
 		cout << "Invalid number. Try again";
