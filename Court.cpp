@@ -1,5 +1,7 @@
 #include "Court.h"
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 
 tCourt initializeCourt() {
 	tCourt newCourt;
@@ -10,7 +12,9 @@ tCourt initializeCourt() {
 	placePlayers(newCourt, PLAYER1X, PLAYER2X);
 
 	placeBall(newCourt, INITIALXPOSITION, INITIALYPOSITION);
-	newCourt.ball.direction = down_left;
+
+	srand(time(NULL));
+	newCourt.ball.direction = tDir(rand() % 6);
 	newCourt.ball.position.x = INITIALXPOSITION;
 	newCourt.ball.position.y = INITIALYPOSITION;
 
@@ -53,82 +57,42 @@ void ballCollidedPlayer(const tBall &ball, const tPlayers &players, bool &collid
 	int diffBallToPlayer;
 	int thirdOfPlayer = (PLAYER_HEIGHT / 3);
 
-	if (ball.position.x - PLAYER1X == 1 && ball.position.y - players.player1y >= 0 && ball.position.y - players.player1y < PLAYER_HEIGHT) {
+	//player 1 collision
+	if (ball.position.x - PLAYER1X == 1 && ball.position.y - players.player1y >= -1 && ball.position.y - players.player1y < PLAYER_HEIGHT) {
 
 		collided = true;
 		//Calculate the part collided with
 		diffBallToPlayer = (ball.position.y - players.player1y);
-		if (diffBallToPlayer >= (2 * thirdOfPlayer)) {
+		if (diffBallToPlayer >= (2 * thirdOfPlayer))
 			part = 3;
-		} else if (diffBallToPlayer >= thirdOfPlayer) {
+		else if (diffBallToPlayer >= thirdOfPlayer)
 			part = 2;
-		} else {
+		else
 			part = 1;
-		}
 	}
 
-	if (ball.position.x - PLAYER2X == -1 && ball.position.y - players.player2y >= 0 && ball.position.y - players.player2y < PLAYER_HEIGHT) {
+	//player 2 collision
+	if (ball.position.x - PLAYER2X == -2 && ball.position.y - players.player2y >= -1 && ball.position.y - players.player2y < PLAYER_HEIGHT) {
 
 		collided = true;
 		//Calculate the part collided with
 		diffBallToPlayer = (ball.position.y - players.player2y);
-		if (diffBallToPlayer >= (2 * thirdOfPlayer)) {
+		if (diffBallToPlayer >= (2 * thirdOfPlayer))
 			part = 3;
-		}
-		else if (diffBallToPlayer >= thirdOfPlayer) {
+		else if (diffBallToPlayer >= thirdOfPlayer)
 			part = 2;
-		}
-		else {
+		else
 			part = 1;
-		}
 	}
-///////////////////////////////////////////////Had to re-do this part
-//	if (((ball.position.y - 1) == (players.player1y + (PLAYER_WIDTH - 1))) && 
-//		(ball.position.y >= players.player1y) &&
-//		(ball.position.y <= (players.player1y + PLAYER_HEIGHT))) { //If true, collision with player 1
-//
-//		collided = true;
-//		//Calculate the part collided with
-//		diffBallToPlayer = (ball.position.x - players.player1y);
-//		if (diffBallToPlayer >= (2 * thirdOfPlayer)) {
-//			part = 3;
-//		} else if (diffBallToPlayer >= thirdOfPlayer) {
-//			part = 2;
-//		} else {
-//			part = 1;
-//		}
-//	}
-//	if (((ball.position.x + BALL_WIDTH + 1) == (PLAYER_2_UPLEFT_EDGE_X)) && 
-//		(ball.position.y >= players.player2y) &&
-//		(ball.position.y <= (players.player2y + PLAYER_HEIGHT))) { //If true, collision with player 2
-//
-//		collided = true;
-//		//Calculate the part collided with
-//		diffBallToPlayer = (ball.position.x - players.player2y);
-//		if (diffBallToPlayer >= (2 * thirdOfPlayer)) {
-//			part = 3;
-//		} else if (diffBallToPlayer >= thirdOfPlayer) {
-//			part = 2;
-//		} else {
-//			part = 1;
-//		}
-//	}
 }
 
 void ballCollidedWall(const tBall &ball, bool &collided) {
 	collided = false;
-	if (ball.position.y == 0) {
+	if (ball.position.y == 0)
 		collided = true;
-	}
-	else if (ball.position.y == COURT_HEIGHT - 1) {
+	else if (ball.position.y == COURT_HEIGHT - 2)
 		collided = true;
-	}
 }
-/*
-//Methods so that Ball and PLayer can know their positions
-tBall getCurrentBallPosition(const tCourt court);
-tPlayers getCurrentPlayerPosition(const tCourt court);
-*/
 
 int getRoundWinner(const tCourt &court) {
 	return court.roundWinner;
@@ -157,8 +121,9 @@ void placeBall(tCourt &court, int ball_x, int ball_y) {
 void placeNet(tCourt &court, int net_x) {
 	for (int i = 0; i < COURT_HEIGHT; ++i) {
 		for (int j = 0; j < COURT_WIDTH; j++) {
-			if (j == net_x || j == net_x + 1)
+			if (j == net_x || j == net_x + 1) {
 				court.board[i][j] = Net;
+			}
 		}
 	}
 }
@@ -189,4 +154,3 @@ bool isThereAWinner(tCourt &court) {
 	}
 	return roundWin;
 }
-
