@@ -16,8 +16,8 @@ const int PLAYER2X = 78;
 //BALL measures
 const int BALL_WIDTH = 2;
 const int BALL_HEIGHT = 2;
-const int INITIALXPOSITION = 30;
-const int INITIALYPOSITION = 15;
+const int INITIALXPOSITION = 39;
+const int INITIALYPOSITION = 20;
 
 //NET measures
 const int NETX = 39;
